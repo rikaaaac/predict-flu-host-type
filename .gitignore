@@ -205,3 +205,11 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# pdfs
+reports/*
+
+esm2.pdf
+extract_contact_maps_example.py
+finetune.py
+load_checkpoint_example.py
