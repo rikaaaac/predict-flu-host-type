@@ -104,13 +104,18 @@ class ClassificationHead(nn.Module):
 
         self.classifier = nn.Sequential(
             nn.Linear(input_dim, hidden_dim),
-            nn.LayerNorm(hidden_dim),  # add normalization
+            nn.LayerNorm(hidden_dim),
             nn.ReLU(),
             nn.Dropout(dropout),
-            nn.Linear(hidden_dim, hidden_dim // 2),  # additional layer
+            nn.Linear(hidden_dim, hidden_dim // 2),
+            nn.LayerNorm(hidden_dim // 2),
             nn.ReLU(),
             nn.Dropout(dropout),
-            nn.Linear(hidden_dim // 2, num_classes)
+            nn.Linear(hidden_dim // 2, hidden_dim // 4),
+            nn.LayerNorm(hidden_dim // 4),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden_dim // 4, num_classes)
         )
 
     def forward(self, embeddings: torch.Tensor) -> torch.Tensor:
@@ -293,16 +298,16 @@ class FineTuningConfig:
     # model architecture
     model_name: str = "esm2_t33_650M_UR50D"
     num_classes: int = 3
-    freeze_layers: int = 30
+    freeze_layers: int = 28
     hidden_dim: int = 256
-    dropout: float = 0.3
+    dropout: float = 0.2
     pooling_strategy: str = "mean"
     
     # training hyperparameters
     learning_rate: float = 1e-5
     weight_decay: float = 0.01
-    batch_size: int = 4
-    num_epochs: int = 20
+    batch_size: int = 8
+    num_epochs: int = 10
     patience: int = 5
     
     # data splitting
@@ -1522,10 +1527,10 @@ if __name__ == "__main__":
     config = FineTuningConfig(
         num_classes=3,  
         model_name="esm2_t33_650M_UR50D",
-        freeze_layers=30,  
+        freeze_layers=28,  
         hidden_dim=256,
         dropout=0.2,
-        batch_size=4,
+        batch_size=8,
         num_epochs=10,
         patience=5,
         learning_rate=1e-5,
