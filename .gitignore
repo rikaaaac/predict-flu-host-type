@@ -5,6 +5,7 @@ esm2.pdf
 extract_contact_maps_example.py
 finetune.py
 load_checkpoint_example.py
+esm2_finetuning2.py
 
 finetune_results/
 !avian_mammals_group_contact_diff.png
