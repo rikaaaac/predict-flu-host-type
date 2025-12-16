@@ -1,5 +1,8 @@
 # pdfs
 reports/*
+__pycache__/*
+
+.DS_Store
 
 esm2.pdf
 extract_contact_maps_example.py
